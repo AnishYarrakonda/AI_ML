@@ -6,6 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="03329447-76e0-4775-9ad2-11c918ced268" name="Changes" comment="commit msg goes here">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ai_projects/linear_regression.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/ai_projects/linear_regression.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ai_projects/polynomial_regression.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/ai_projects/polynomial_regression.ipynb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Simulations" beforeDir="false" afterPath="$PROJECT_DIR$/../Simulations" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
