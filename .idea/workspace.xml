@@ -5,9 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="03329447-76e0-4775-9ad2-11c918ced268" name="Changes" comment="commit msg goes here">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/PyTorch Course/00_pytorch_fundamentals.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/PyTorch Course/00_pytorch_fundamentals.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ai_projects/polynomial_regression.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/ai_projects/polynomial_regression.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PyTorch Course/01_pytorch_workflow.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/PyTorch Course/01_pytorch_workflow.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PyTorch Course/02_pytorch_classification.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/PyTorch Course/02_pytorch_classification.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Simulations" beforeDir="false" afterPath="$PROJECT_DIR$/../Simulations" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,12 +33,12 @@
     &quot;assignee&quot;: &quot;AnishYarrakonda&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/AnishYarrakonda/AI_ML.git&quot;,
-    &quot;accountId&quot;: &quot;37afb1f6-c7d1-4cd8-ae8a-ec67deb24f40&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/AnishYarrakonda/AI_ML.git",
+    "accountId": "22d2c6a9-c981-427d-92f8-562b51a9a1f6"
   }
-}</component>
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 4
 }</component>
