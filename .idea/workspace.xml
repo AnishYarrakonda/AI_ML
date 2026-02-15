@@ -4,7 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="03329447-76e0-4775-9ad2-11c918ced268" name="Changes" comment="commit msg goes here" />
+    <list default="true" id="03329447-76e0-4775-9ad2-11c918ced268" name="Changes" comment="commit msg goes here">
+      <change beforePath="$PROJECT_DIR$" beforeDir="false" afterPath="$PROJECT_DIR$" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/project.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PyTorch Course/02_pytorch_classification.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/PyTorch Course/02_pytorch_classification.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/practice.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/practice.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DoveHawksSim" beforeDir="false" afterPath="$PROJECT_DIR$/../DoveHawksSim" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Intro-to-Python-Ohlone" beforeDir="false" afterPath="$PROJECT_DIR$/../Intro-to-Python-Ohlone" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../NaturalSelectionSim" beforeDir="false" afterPath="$PROJECT_DIR$/../NaturalSelectionSim" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../RockPaperScissorsSim" beforeDir="false" afterPath="$PROJECT_DIR$/../RockPaperScissorsSim" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../USACO-Python" beforeDir="false" afterPath="$PROJECT_DIR$/../USACO-Python" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
