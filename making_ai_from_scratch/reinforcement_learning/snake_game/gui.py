@@ -36,6 +36,7 @@ except ImportError:
 
 class SnakeApp:
     """Tkinter presentation layer for SnakeGame."""
+    UI_SCALE = 1.35
     BG = "#101418"
     BOARD_BG = "#1c2229"
     SIDEBAR_BG = "#0f1720"
@@ -51,7 +52,9 @@ class SnakeApp:
         self.root = root
         self.root.title("Snake Trainer")
         self.root.configure(bg=self.BG)
-        self.root.minsize(980, 720)
+        self.root.tk.call("tk", "scaling", self.UI_SCALE)
+        self.root.minsize(self._s(1200), self._s(860))
+        self.root.geometry(f"{self._s(1480)}x{self._s(980)}")
 
         self.config = SnakeConfig()
         self.game = SnakeGame(self.config)
@@ -62,13 +65,17 @@ class SnakeApp:
         self._apply_canvas_size()
         self.draw()
 
+    def _s(self, value: int) -> int:
+        """Scale pixel/font values for better readability."""
+        return int(round(value * self.UI_SCALE))
+
     def _build_layout(self) -> None:
         """Create game canvas + right sidebar panels."""
         self.root.columnconfigure(0, weight=1)
         self.root.rowconfigure(0, weight=1)
 
         container = tk.Frame(self.root, bg=self.BG)
-        container.grid(row=0, column=0, sticky="nsew", padx=16, pady=16)
+        container.grid(row=0, column=0, sticky="nsew", padx=self._s(16), pady=self._s(16))
         container.columnconfigure(0, weight=1)
         container.columnconfigure(1, weight=0)
         container.rowconfigure(0, weight=1)
@@ -79,9 +86,9 @@ class SnakeApp:
             highlightthickness=0,
             bd=0,
         )
-        self.canvas.grid(row=0, column=0, sticky="nsew", padx=(0, 14))
+        self.canvas.grid(row=0, column=0, sticky="nsew", padx=(0, self._s(16)))
 
-        self.sidebar = tk.Frame(container, bg=self.SIDEBAR_BG, width=300)
+        self.sidebar = tk.Frame(container, bg=self.SIDEBAR_BG, width=self._s(430))
         self.sidebar.grid(row=0, column=1, sticky="ns")
         self.sidebar.grid_propagate(False)
 
@@ -90,18 +97,18 @@ class SnakeApp:
             text="Snake Controls",
             fg=self.TEXT_PRIMARY,
             bg=self.SIDEBAR_BG,
-            font=("Helvetica", 18, "bold"),
+            font=("Helvetica", self._s(16), "bold"),
         )
-        title.pack(anchor="w", padx=16, pady=(16, 4))
+        title.pack(anchor="w", padx=self._s(16), pady=(self._s(16), self._s(6)))
 
         subtitle = tk.Label(
             self.sidebar,
             text="Tune settings, then press Start",
             fg=self.TEXT_MUTED,
             bg=self.SIDEBAR_BG,
-            font=("Helvetica", 10),
+            font=("Helvetica", self._s(10)),
         )
-        subtitle.pack(anchor="w", padx=16, pady=(0, 12))
+        subtitle.pack(anchor="w", padx=self._s(16), pady=(0, self._s(14)))
 
         self._build_status()
         self._build_controls()
@@ -115,10 +122,10 @@ class SnakeApp:
             fg=self.TEXT_PRIMARY,
             bg=self.SIDEBAR_BG,
             bd=1,
-            font=("Helvetica", 10, "bold"),
+            font=("Helvetica", self._s(10), "bold"),
             labelanchor="n",
         )
-        frame.pack(fill="x", padx=16, pady=(0, 12))
+        frame.pack(fill="x", padx=self._s(16), pady=(0, self._s(14)))
 
         self.score_var = tk.StringVar(value="Score: 0")
         self.length_var = tk.StringVar(value=f"Length: {len(self.game.snake)}")
@@ -130,9 +137,9 @@ class SnakeApp:
                 textvariable=var,
                 fg=self.TEXT_PRIMARY,
                 bg=self.SIDEBAR_BG,
-                font=("Helvetica", 11),
+                font=("Helvetica", self._s(11)),
                 anchor="w",
-            ).pack(fill="x", padx=10, pady=4)
+            ).pack(fill="x", padx=self._s(10), pady=self._s(4))
 
     def _build_controls(self) -> None:
         """Settings section for values that rebuild the game state."""
@@ -142,10 +149,10 @@ class SnakeApp:
             fg=self.TEXT_PRIMARY,
             bg=self.SIDEBAR_BG,
             bd=1,
-            font=("Helvetica", 10, "bold"),
+            font=("Helvetica", self._s(10), "bold"),
             labelanchor="n",
         )
-        frame.pack(fill="x", padx=16, pady=(0, 12))
+        frame.pack(fill="x", padx=self._s(16), pady=(0, self._s(14)))
 
         self.grid_size_var = tk.StringVar(value=str(self.config.grid_size))
         self.cell_size_var = tk.StringVar(value=str(self.config.cell_size))
@@ -170,8 +177,8 @@ class SnakeApp:
             selectcolor=self.SIDEBAR_BG,
             activebackground=self.SIDEBAR_BG,
             activeforeground=self.TEXT_PRIMARY,
-            font=("Helvetica", 10),
-        ).pack(anchor="w", padx=10, pady=(8, 2))
+            font=("Helvetica", self._s(10)),
+        ).pack(anchor="w", padx=self._s(10), pady=(self._s(8), self._s(2)))
 
         tk.Checkbutton(
             frame,
@@ -182,8 +189,8 @@ class SnakeApp:
             selectcolor=self.SIDEBAR_BG,
             activebackground=self.SIDEBAR_BG,
             activeforeground=self.TEXT_PRIMARY,
-            font=("Helvetica", 10),
-        ).pack(anchor="w", padx=10, pady=(2, 10))
+            font=("Helvetica", self._s(10)),
+        ).pack(anchor="w", padx=self._s(10), pady=(self._s(2), self._s(10)))
 
         hint = tk.Label(
             frame,
@@ -194,22 +201,22 @@ class SnakeApp:
             fg=self.TEXT_MUTED,
             bg=self.SIDEBAR_BG,
             justify="left",
-            wraplength=260,
-            font=("Helvetica", 9),
+            wraplength=self._s(320),
+            font=("Helvetica", self._s(9)),
         )
-        hint.pack(anchor="w", padx=10, pady=(0, 10))
+        hint.pack(anchor="w", padx=self._s(10), pady=(0, self._s(10)))
 
     def _add_labeled_spinbox(self, parent: tk.Widget, label: str, var: tk.StringVar) -> None:
         """Small helper to render one setting row."""
         row = tk.Frame(parent, bg=self.SIDEBAR_BG)
-        row.pack(fill="x", padx=10, pady=4)
+        row.pack(fill="x", padx=self._s(10), pady=self._s(4))
 
         tk.Label(
             row,
             text=label,
             fg=self.TEXT_PRIMARY,
             bg=self.SIDEBAR_BG,
-            font=("Helvetica", 10),
+            font=("Helvetica", self._s(10)),
         ).pack(side="left")
 
         spin = tk.Spinbox(
@@ -217,41 +224,41 @@ class SnakeApp:
             from_=0,
             to=999,
             textvariable=var,
-            width=8,
+            width=10,
             justify="center",
             bd=0,
             relief="flat",
             bg="#e8eef5",
             fg="#1a2734",
-            font=("Helvetica", 10),
+            font=("Helvetica", self._s(10)),
         )
         spin.pack(side="right")
 
     def _build_buttons(self) -> None:
         """Action buttons for start/pause/reset/apply."""
         frame = tk.Frame(self.sidebar, bg=self.SIDEBAR_BG)
-        frame.pack(fill="x", padx=16, pady=(0, 10))
+        frame.pack(fill="x", padx=self._s(16), pady=(0, self._s(10)))
 
         self.start_btn = self._button(frame, "Start", self.start_game)
-        self.start_btn.pack(fill="x", pady=4)
+        self.start_btn.pack(fill="x", pady=self._s(4))
 
         self.pause_btn = self._button(frame, "Pause", self.toggle_pause)
-        self.pause_btn.pack(fill="x", pady=4)
+        self.pause_btn.pack(fill="x", pady=self._s(4))
 
         self.reset_btn = self._button(frame, "Reset", self.reset_game)
-        self.reset_btn.pack(fill="x", pady=4)
+        self.reset_btn.pack(fill="x", pady=self._s(4))
 
         self.apply_btn = self._button(frame, "Apply Settings", self.apply_settings)
-        self.apply_btn.pack(fill="x", pady=4)
+        self.apply_btn.pack(fill="x", pady=self._s(4))
 
         footer = tk.Label(
             self.sidebar,
             text="Move: Arrow keys / WASD",
             fg=self.TEXT_MUTED,
             bg=self.SIDEBAR_BG,
-            font=("Helvetica", 10),
+            font=("Helvetica", self._s(10)),
         )
-        footer.pack(anchor="w", padx=16, pady=(4, 10))
+        footer.pack(anchor="w", padx=self._s(16), pady=(self._s(4), self._s(10)))
 
     def _button(self, parent: tk.Widget, text: str, command) -> tk.Button:
         return tk.Button(
@@ -264,9 +271,9 @@ class SnakeApp:
             activeforeground="#09141f",
             bd=0,
             relief="flat",
-            font=("Helvetica", 11, "bold"),
-            padx=10,
-            pady=8,
+            font=("Helvetica", self._s(11), "bold"),
+            padx=self._s(12),
+            pady=self._s(9),
             cursor="hand2",
         )
 
