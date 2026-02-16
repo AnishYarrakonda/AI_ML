@@ -5,28 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="03329447-76e0-4775-9ad2-11c918ced268" name="Changes" comment="commit msg goes here">
-      <change afterPath="$PROJECT_DIR$/pytorch_course/practice.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Basic ML Libraries/1 Numpy Course/00_numpy_fundamentals.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/basic_ml_libraries/1 Numpy/00_numpy_fundamentals.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Basic ML Libraries/1 Numpy Course/01_numpy_advanced.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/basic_ml_libraries/1 Numpy/01_numpy_advanced.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Basic ML Libraries/1 Numpy Course/np_data.csv" beforeDir="false" afterPath="$PROJECT_DIR$/basic_ml_libraries/1 Numpy/np_data.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Basic ML Libraries/2 Pandas Course/00_pandas_fundamentals.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/basic_ml_libraries/2 Pandas/00_pandas_fundamentals.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Basic ML Libraries/2 Pandas Course/01_pandas_advanced.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/basic_ml_libraries/2 Pandas/01_pandas_advanced.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Basic ML Libraries/2 Pandas Course/big_sample.csv" beforeDir="false" afterPath="$PROJECT_DIR$/basic_ml_libraries/2 Pandas/big_sample.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Basic ML Libraries/2 Pandas Course/sample_people.csv" beforeDir="false" afterPath="$PROJECT_DIR$/basic_ml_libraries/2 Pandas/sample_people.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Basic ML Libraries/3 Plotting with Matplotlib and Seaborn/00_matplotlib.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/basic_ml_libraries/3 Plotting with Matplotlib and Seaborn/00_matplotlib.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Basic ML Libraries/3 Plotting with Matplotlib and Seaborn/01_seaborn_fundamentals.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/basic_ml_libraries/3 Plotting with Matplotlib and Seaborn/01_seaborn_fundamentals.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Basic ML Libraries/3 Plotting with Matplotlib and Seaborn/penguins.csv" beforeDir="false" afterPath="$PROJECT_DIR$/basic_ml_libraries/3 Plotting with Matplotlib and Seaborn/penguins.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Basic ML Libraries/3 Plotting with Matplotlib and Seaborn/seaborn_sample.csv" beforeDir="false" afterPath="$PROJECT_DIR$/basic_ml_libraries/3 Plotting with Matplotlib and Seaborn/seaborn_sample.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Basic ML Libraries/3 Plotting with Matplotlib and Seaborn/seaborn_summary_bar.png" beforeDir="false" afterPath="$PROJECT_DIR$/basic_ml_libraries/3 Plotting with Matplotlib and Seaborn/seaborn_summary_bar.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch Course/00_pytorch_fundamentals.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/pytorch_course/00_pytorch_fundamentals.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch Course/01_pytorch_workflow.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/pytorch_course/01_pytorch_workflow.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch Course/02a_pytorch_classification.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/pytorch_course/02_pytorch_classification.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch Course/02b_practice.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch Course/03_pytorch_computer_vision.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/pytorch_course/03_pytorch_computer_vision.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch Course/helper_functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/pytorch_course/helper_functions.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch Course/models/01_pytorch_workflow_model_0.pth" beforeDir="false" afterPath="$PROJECT_DIR$/pytorch_course/models/01_pytorch_workflow_model_0.pth" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch Course/models/01_pytorch_workflow_model_1.pth" beforeDir="false" afterPath="$PROJECT_DIR$/pytorch_course/models/01_pytorch_workflow_model_1.pth" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/making_ai_from_scratch/snake_game_reinforcement_learning.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/making_ai_from_scratch/tic_tac_toe.py" beforeDir="false" afterPath="$PROJECT_DIR$/making_ai_from_scratch/tic_tac_toe_reinforcement_learning.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -212,7 +192,15 @@
       <option name="project" value="LOCAL" />
       <updated>1770968497792</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="commit msg goes here">
+      <option name="closed" value="true" />
+      <created>1771217602086</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1771217602086</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">

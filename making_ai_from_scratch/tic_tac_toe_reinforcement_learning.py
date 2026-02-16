@@ -1,6 +1,46 @@
 import random
 import time
 
+# 8 board symmetries (D4): identity, 3 rotations, and 4 reflections
+_TRANSFORMS = (
+    lambda r, c: (r, c),           # identity
+    lambda r, c: (c, 2 - r),       # rotate 90
+    lambda r, c: (2 - r, 2 - c),   # rotate 180
+    lambda r, c: (2 - c, r),       # rotate 270
+    lambda r, c: (r, 2 - c),       # reflect vertical axis
+    lambda r, c: (2 - r, c),       # reflect horizontal axis
+    lambda r, c: (c, r),           # reflect main diagonal
+    lambda r, c: (2 - c, 2 - r),   # reflect anti-diagonal
+)
+
+
+def _transform_index(index, transform_id):
+    row, col = divmod(index, 3)
+    new_row, new_col = _TRANSFORMS[transform_id](row, col)
+    return new_row * 3 + new_col
+
+
+def _transform_state(state, transform_id):
+    new_state = 0
+    for i in range(9):
+        cell_value = (state // (3 ** i)) % 3
+        if cell_value != 0:
+            new_index = _transform_index(i, transform_id)
+            new_state += cell_value * (3 ** new_index)
+    return new_state
+
+
+def canonicalize_state_action(state, action):
+    best_key = None
+    for transform_id in range(8):
+        transformed_state = _transform_state(state, transform_id)
+        transformed_action = _transform_index(action, transform_id)
+        key = (transformed_state, transformed_action)
+        if best_key is None or key < best_key:
+            best_key = key
+    return best_key
+
+
 class Board:
     # creates a board (state is stored as a base-3 integer)
     # each cell is 3^i (i is the cell number 0-8)
@@ -120,20 +160,23 @@ class CPU(Player):
             q_avgs = []
             # go through each possible move
             for m in moves:
-                # get the q_value stats (state, action) from the dictionary
-                total, count = q_values.get((board.state, m), (0, 0))
+                # use canonical symmetry key so equivalent boards share one Q-entry
+                key = canonicalize_state_action(board.state, m)
+                total, count = q_values.get(key, (0, 0))
                 # calculate the average reward based on the total_reward and times_reached
                 avg = total / count if count > 0 else 0
                 # append the tuple
-                q_avgs.append((avg, m))
+                q_avgs.append((avg, count, m))
             # get the highest average in the list (the best move based on previous games and data)    
             max_avg = max(q_avgs, key=lambda x: x[0])[0]
             # handle ties between moves if the average reward is the same
-            best_moves = [m for avg, m in q_avgs if avg == max_avg]
-            # pick a random move out of the best move (only 1) or tied best moves (multiple)
-            move = random.choice(best_moves)
+            best_moves = [(count, m) for avg, count, m in q_avgs if avg == max_avg]
+            max_count = max(best_moves, key=lambda x: x[0])[0]
+            best_moves = [m for count, m in best_moves if count == max_count]
+            # in gen3 (pure greedy), use deterministic tie-break to avoid random blunders
+            move = min(best_moves) if gen == 3 and epsilon == 0 else random.choice(best_moves)
         # add the move to the self.moves list (moves played in the current game)
-        self.moves.append((board.state, move))
+        self.moves.append(canonicalize_state_action(board.state, move))
         # then return the move
         return move
 
@@ -142,7 +185,7 @@ class CPU(Player):
 # they play moves based on the generation
 # same as a regular game but the moves are not printed to the board for efficiency
 # trains the cpu to find the best moves based on reward
-def simulate_game(cpu1: CPU, cpu2: CPU, q_values: dict, stats: dict, gen=1, epsilon=0.1):
+def simulate_game(cpu1: CPU, cpu2: CPU, q_values: dict, stats: dict, gen=1, epsilon=0.1, learn=True):
     board = Board()
     cpu1.moves = []
     cpu2.moves = []
@@ -176,13 +219,14 @@ def simulate_game(cpu1: CPU, cpu2: CPU, q_values: dict, stats: dict, gen=1, epsi
                 reward2 = 1
                 stats['win_loss'] += 1
             
-            # assigns the respective reward to all of the state-action pairs played by each cpu
-            for state, action in cpu1.moves:
-                total_reward, times = q_values.get((state, action), (0, 0))         # first it gets the current total reward and times reached
-                q_values[(state, action)] = (total_reward + reward1, times + 1)     # then it adds the reward for this game and it adds 1 to the number of times reached
-            for state, action in cpu2.moves:
-                total_reward, times = q_values.get((state, action), (0, 0))         # same as first cpu
-                q_values[(state, action)] = (total_reward + reward2, times + 1)
+            if learn:
+                # assigns the respective reward to all of the state-action pairs played by each cpu
+                for key in cpu1.moves:
+                    total_reward, times = q_values.get(key, (0, 0))         # first it gets the current total reward and times reached
+                    q_values[key] = (total_reward + reward1, times + 1)     # then it adds the reward for this game and it adds 1 to the number of times reached
+                for key in cpu2.moves:
+                    total_reward, times = q_values.get(key, (0, 0))         # same as first cpu
+                    q_values[key] = (total_reward + reward2, times + 1)
 
             # ends the while loop (game finished)
             break
@@ -221,7 +265,7 @@ def train_cpus(first_gen_games=0, second_gen_games=0, test_games=0):
     if test_games > 0:
         stats = {'win_loss': 0, 'draws': 0}
         for _ in range(test_games):
-            simulate_game(cpu1, cpu2, q_values, stats, gen=3, epsilon=0)
+            simulate_game(cpu1, cpu2, q_values, stats, gen=3, epsilon=0, learn=False)
         print(f"The gen 3 CPU played itself {test_games} times.\nThe games ended in a win/loss {stats['win_loss']} times.\nThe games ended in a draw {stats['draws']} times.\n")
     end_time = time.time()
     dif = end_time-start_time
