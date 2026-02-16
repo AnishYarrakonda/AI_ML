@@ -6,28 +6,18 @@ from tkinter import messagebox
 # Support both package imports and running this file directly.
 try:
     from .game_logic import (
-        MAX_APPLES,
         MAX_CELL_SIZE,
-        MAX_GRID_SIZE,
         MAX_SPEED_MS,
-        MIN_APPLES,
         MIN_CELL_SIZE,
-        MIN_GRID_SIZE,
-        MIN_INITIAL_LENGTH,
         MIN_SPEED_MS,
         SnakeConfig,
         SnakeGame,
     )
 except ImportError:
     from game_logic import (
-        MAX_APPLES,
         MAX_CELL_SIZE,
-        MAX_GRID_SIZE,
         MAX_SPEED_MS,
-        MIN_APPLES,
         MIN_CELL_SIZE,
-        MIN_GRID_SIZE,
-        MIN_INITIAL_LENGTH,
         MIN_SPEED_MS,
         SnakeConfig,
         SnakeGame,
@@ -47,6 +37,15 @@ class SnakeApp:
     TEXT_PRIMARY = "#e6eef7"
     TEXT_MUTED = "#95a4b8"
     ACCENT = "#42c4ff"
+    BORDER_COLOR = "#7f8b99"
+
+    GRID_PRESETS = {
+        "Small (10x10)": 10,
+        "Medium (20x20)": 20,
+        "Large (30x30)": 30,
+        "Very Large (40x40)": 40,
+    }
+    APPLE_PRESETS = ("1", "3", "5", "10")
 
     def __init__(self, root: tk.Tk) -> None:
         self.root = root
@@ -115,7 +114,7 @@ class SnakeApp:
         self._build_buttons()
 
     def _build_status(self) -> None:
-        """Top sidebar section with live score/length/run-state labels."""
+        """Top sidebar section with live length/run-state labels."""
         frame = tk.LabelFrame(
             self.sidebar,
             text="Status",
@@ -127,11 +126,10 @@ class SnakeApp:
         )
         frame.pack(fill="x", padx=self._s(16), pady=(0, self._s(14)))
 
-        self.score_var = tk.StringVar(value="Score: 0")
         self.length_var = tk.StringVar(value=f"Length: {len(self.game.snake)}")
         self.state_var = tk.StringVar(value="State: Ready")
 
-        for var in (self.score_var, self.length_var, self.state_var):
+        for var in (self.length_var, self.state_var):
             tk.Label(
                 frame,
                 textvariable=var,
@@ -154,49 +152,20 @@ class SnakeApp:
         )
         frame.pack(fill="x", padx=self._s(16), pady=(0, self._s(14)))
 
-        self.grid_size_var = tk.StringVar(value=str(self.config.grid_size))
+        self.grid_size_var = tk.StringVar(value="Medium (20x20)")
         self.cell_size_var = tk.StringVar(value=str(self.config.cell_size))
         self.speed_var = tk.StringVar(value=str(self.config.speed_ms))
-        self.apples_var = tk.StringVar(value=str(self.config.apples))
-        self.length_setting_var = tk.StringVar(value=str(self.config.initial_length))
-        self.wrap_var = tk.BooleanVar(value=self.config.wrap_walls)
-        self.show_grid_var = tk.BooleanVar(value=self.config.show_grid)
+        self.apples_var = tk.StringVar(value="3")
 
-        self._add_labeled_spinbox(frame, "Grid Size", self.grid_size_var)
+        self._add_labeled_dropdown(frame, "Grid Size", self.grid_size_var, list(self.GRID_PRESETS.keys()))
         self._add_labeled_spinbox(frame, "Cell Size", self.cell_size_var)
         self._add_labeled_spinbox(frame, "Speed (ms)", self.speed_var)
-        self._add_labeled_spinbox(frame, "Apples", self.apples_var)
-        self._add_labeled_spinbox(frame, "Initial Length", self.length_setting_var)
-
-        tk.Checkbutton(
-            frame,
-            text="Wrap through walls",
-            variable=self.wrap_var,
-            fg=self.TEXT_PRIMARY,
-            bg=self.SIDEBAR_BG,
-            selectcolor=self.SIDEBAR_BG,
-            activebackground=self.SIDEBAR_BG,
-            activeforeground=self.TEXT_PRIMARY,
-            font=("Helvetica", self._s(10)),
-        ).pack(anchor="w", padx=self._s(10), pady=(self._s(8), self._s(2)))
-
-        tk.Checkbutton(
-            frame,
-            text="Show grid lines",
-            variable=self.show_grid_var,
-            fg=self.TEXT_PRIMARY,
-            bg=self.SIDEBAR_BG,
-            selectcolor=self.SIDEBAR_BG,
-            activebackground=self.SIDEBAR_BG,
-            activeforeground=self.TEXT_PRIMARY,
-            font=("Helvetica", self._s(10)),
-        ).pack(anchor="w", padx=self._s(10), pady=(self._s(2), self._s(10)))
+        self._add_labeled_dropdown(frame, "Apples", self.apples_var, list(self.APPLE_PRESETS))
 
         hint = tk.Label(
             frame,
             text=(
-                f"Ranges: grid {MIN_GRID_SIZE}-{MAX_GRID_SIZE}, cell {MIN_CELL_SIZE}-{MAX_CELL_SIZE}, "
-                f"speed {MIN_SPEED_MS}-{MAX_SPEED_MS}, apples {MIN_APPLES}-{MAX_APPLES}"
+                "Initial length is fixed at 3. Gridlines and wall border are always shown."
             ),
             fg=self.TEXT_MUTED,
             bg=self.SIDEBAR_BG,
@@ -233,6 +202,39 @@ class SnakeApp:
             font=("Helvetica", self._s(10)),
         )
         spin.pack(side="right")
+
+    def _add_labeled_dropdown(self, parent: tk.Widget, label: str, var: tk.StringVar, options: list[str]) -> None:
+        """Render a labeled dropdown with fixed allowed choices."""
+        row = tk.Frame(parent, bg=self.SIDEBAR_BG)
+        row.pack(fill="x", padx=self._s(10), pady=self._s(4))
+
+        tk.Label(
+            row,
+            text=label,
+            fg=self.TEXT_PRIMARY,
+            bg=self.SIDEBAR_BG,
+            font=("Helvetica", self._s(10)),
+        ).pack(side="left")
+
+        dropdown = tk.OptionMenu(row, var, *options)
+        dropdown.config(
+            width=14,
+            bg="#e8eef5",
+            fg="#1a2734",
+            activebackground="#dce7f1",
+            activeforeground="#1a2734",
+            bd=0,
+            highlightthickness=0,
+            font=("Helvetica", self._s(10)),
+        )
+        dropdown["menu"].config(
+            bg="#e8eef5",
+            fg="#1a2734",
+            activebackground="#dce7f1",
+            activeforeground="#1a2734",
+            font=("Helvetica", self._s(10)),
+        )
+        dropdown.pack(side="right")
 
     def _build_buttons(self) -> None:
         """Action buttons for start/pause/reset/apply."""
@@ -302,30 +304,12 @@ class SnakeApp:
     def apply_settings(self) -> None:
         """Validate sidebar values, then rebuild the game with new config."""
         try:
-            grid_size = self._parse_int(self.grid_size_var.get(), MIN_GRID_SIZE, MAX_GRID_SIZE, "Grid size")
+            grid_size = self.GRID_PRESETS[self.grid_size_var.get()]
             cell_size = self._parse_int(self.cell_size_var.get(), MIN_CELL_SIZE, MAX_CELL_SIZE, "Cell size")
             speed_ms = self._parse_int(self.speed_var.get(), MIN_SPEED_MS, MAX_SPEED_MS, "Speed")
-            apples = self._parse_int(self.apples_var.get(), MIN_APPLES, MAX_APPLES, "Apples")
-            initial_length = self._parse_int(
-                self.length_setting_var.get(),
-                MIN_INITIAL_LENGTH,
-                grid_size,
-                "Initial length",
-            )
-        except ValueError as exc:
+            apples = int(self.apples_var.get())
+        except (ValueError, KeyError) as exc:
             messagebox.showerror("Invalid Setting", str(exc))
-            return
-
-        # Keep at least one free tile for movement/spawns.
-        max_apples_by_tiles = max(1, grid_size * grid_size - initial_length)
-        if apples > max_apples_by_tiles:
-            messagebox.showerror(
-                "Invalid Setting",
-                (
-                    f"Apples is too high for the selected grid and snake length. "
-                    f"Maximum allowed is {max_apples_by_tiles}."
-                ),
-            )
             return
 
         self.config = SnakeConfig(
@@ -333,9 +317,9 @@ class SnakeApp:
             cell_size=cell_size,
             speed_ms=speed_ms,
             apples=apples,
-            initial_length=initial_length,
-            wrap_walls=self.wrap_var.get(),
-            show_grid=self.show_grid_var.get(),
+            initial_length=3,
+            wrap_walls=False,
+            show_grid=True,
         )
         self.game = SnakeGame(self.config)
         self._cancel_loop()
@@ -402,12 +386,16 @@ class SnakeApp:
         size = self.config.grid_size
         cell = self.config.cell_size
 
-        if self.config.show_grid:
-            # Optional guide lines to make large boards easier to read.
-            for i in range(size + 1):
-                pos = i * cell
-                self.canvas.create_line(0, pos, size * cell, pos, fill=self.GRID_COLOR)
-                self.canvas.create_line(pos, 0, pos, size * cell, fill=self.GRID_COLOR)
+        # Gridlines are always shown.
+        for i in range(size + 1):
+            pos = i * cell
+            self.canvas.create_line(0, pos, size * cell, pos, fill=self.GRID_COLOR)
+            self.canvas.create_line(pos, 0, pos, size * cell, fill=self.GRID_COLOR)
+
+        # Visible wall border around the board.
+        self.canvas.create_rectangle(
+            1, 1, size * cell - 1, size * cell - 1, outline=self.BORDER_COLOR, width=2
+        )
 
         for x, y in self.game.apples:
             x1, y1 = x * cell + 4, y * cell + 4
@@ -420,7 +408,6 @@ class SnakeApp:
             x2, y2 = (x + 1) * cell - 2, (y + 1) * cell - 2
             self.canvas.create_rectangle(x1, y1, x2, y2, fill=color, outline="")
 
-        self.score_var.set(f"Score: {self.game.score}")
         self.length_var.set(f"Length: {len(self.game.snake)}")
 
         if not self.game.alive:
