@@ -5,8 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="03329447-76e0-4775-9ad2-11c918ced268" name="Changes" comment="commit msg goes here">
-      <change afterPath="$PROJECT_DIR$/making_ai_from_scratch/snake_game_reinforcement_learning.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/making_ai_from_scratch/tic_tac_toe.py" beforeDir="false" afterPath="$PROJECT_DIR$/making_ai_from_scratch/tic_tac_toe_reinforcement_learning.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/making_ai_from_scratch/reinforcement_learning/snake_game/gui.py" beforeDir="false" afterPath="$PROJECT_DIR$/making_ai_from_scratch/reinforcement_learning/snake_game/gui.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/making_ai_from_scratch/reinforcement_learning/snake_game/models/snake_dqn_10x10.pt" beforeDir="false" afterPath="$PROJECT_DIR$/making_ai_from_scratch/reinforcement_learning/snake_game/models/snake_dqn_10x10.pt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/making_ai_from_scratch/reinforcement_learning/snake_game/qlearning_agent.py" beforeDir="false" afterPath="$PROJECT_DIR$/making_ai_from_scratch/reinforcement_learning/snake_game/qlearning_agent.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
