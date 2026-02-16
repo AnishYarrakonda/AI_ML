@@ -28,33 +28,45 @@ def walk_through_dir(dir_path):
 
     Returns:
     A print out of:
-      number of subdiretories in dir_path
+      number of subdirectories in dir_path
       number of images (files) in each subdirectory
       name of each subdirectory
     """
     for dirpath, dirnames, filenames in os.walk(dir_path):
         print(f"There are {len(dirnames)} directories and {len(filenames)} images in '{dirpath}'.")
 
-
-def plot_decision_boundaries(model: torch.nn.Module,
-                             X_train: torch.Tensor,
-                             y_train: torch.Tensor,
-                             X_test: torch.Tensor = None,
-                             y_test: torch.Tensor = None,
-                             title: str = "Decision Boundary"):
+def plot_decision_boundaries(model,
+                             X_train,
+                             y_train,
+                             X_test=None,
+                             y_test=None,
+                             title="Decision Boundaries",
+                             device="cpu"):
     """
-    Plots decision boundary.
+    Plots decision boundaries for a trained model.
 
-    If X_test and y_test are provided, creates two subplots:
-        Left  -> Train
-        Right -> Test
-    Otherwise plots a single boundary.
+    If only train data is provided → single plot.
+    If test data is provided → two subplots (train/test).
+
+    Assumes 2D input features.
     """
 
-    model = model.to("cpu")
-    X_train, y_train = X_train.to("cpu"), y_train.to("cpu")
+    model.to(device)
+    model.eval()
+
+    # Move tensors to CPU for plotting
+    X_train = X_train.to("cpu")
+    y_train = y_train.to("cpu")
+
+    if X_test is not None and y_test is not None:
+        X_test = X_test.to("cpu")
+        y_test = y_test.to("cpu")
 
     def _plot(ax, X, y, subtitle):
+        # define the cmap style
+        cmap_style = "viridis"
+
+        # Create mesh grid
         x_min, x_max = X[:, 0].min() - 0.5, X[:, 0].max() + 0.5
         y_min, y_max = X[:, 1].min() - 0.5, X[:, 1].max() + 0.5
 
@@ -63,66 +75,76 @@ def plot_decision_boundaries(model: torch.nn.Module,
             np.linspace(y_min, y_max, 300)
         )
 
-        grid = torch.from_numpy(
-            np.c_[xx.ravel(), yy.ravel()]
-        ).float()
+        grid = torch.tensor(
+            np.c_[xx.ravel(), yy.ravel()],
+            dtype=torch.float32
+        ).to(device)
 
-        model.eval()
         with torch.inference_mode():
             logits = model(grid)
+            preds = torch.argmax(logits, dim=1)
 
-        if len(torch.unique(y)) > 2:
-            preds = logits.softmax(dim=1).argmax(dim=1)
-        else:
-            preds = torch.round(torch.sigmoid(logits))
+        preds = preds.reshape(xx.shape).cpu().numpy()
 
-        preds = preds.reshape(xx.shape).detach().numpy()
+        # Plot decision regions
+        ax.contourf(xx, yy, preds, alpha=0.3, cmap=cmap_style)
 
-        ax.contourf(xx, yy, preds, alpha=0.25, cmap="tab10")
-
+        # Plot data points
         scatter = ax.scatter(
-            X[:, 0], X[:, 1],
+            X[:, 0],
+            X[:, 1],
             c=y,
-            cmap="tab10",
-            s=40,
+            cmap=cmap_style,
             edgecolor="k",
-            alpha=0.9
+            s=40
         )
 
         ax.set_title(subtitle)
         ax.set_xlabel("Feature 1")
         ax.set_ylabel("Feature 2")
-        ax.grid(alpha=0.3)
 
         return scatter
 
-    # ---- Single Plot ----
+    # -------- SINGLE PLOT --------
     if X_test is None or y_test is None:
-        fig, ax = plt.subplots(figsize=(7, 7))
-        scatter = _plot(ax, X_train, y_train, title)
+        fig, ax = plt.subplots(figsize=(7, 6))
+
+        scatter = _plot(ax, X_train, y_train, "Train")
 
         handles, _ = scatter.legend_elements()
-        labels = [f"Class {i}" for i in torch.unique(y_train)]
-        ax.legend(handles, labels, title="Classes")
+        labels = [f"Class {int(i)}" for i in torch.unique(y_train)]
 
+        ax.legend(handles, labels, title="Classes", loc="upper right")
+
+        fig.suptitle(title, fontsize=14, y=0.98)
         plt.tight_layout()
         plt.show()
 
-    # ---- Two Subplots ----
+    # -------- TWO SUBPLOTS --------
     else:
-        X_test, y_test = X_test.to("cpu"), y_test.to("cpu")
-
         fig, axes = plt.subplots(1, 2, figsize=(14, 6))
 
         scatter_train = _plot(axes[0], X_train, y_train, "Train")
-        scatter_test = _plot(axes[1], X_test, y_test, "Test")
+        scatter_test  = _plot(axes[1], X_test, y_test, "Test")
 
         handles, _ = scatter_train.legend_elements()
-        labels = [f"Class {i}" for i in torch.unique(y_train)]
-        fig.legend(handles, labels, title="Classes", loc="upper center", ncol=len(labels))
+        labels = [f"Class {int(i)}" for i in torch.unique(y_train)]
 
-        fig.suptitle(title, fontsize=14)
-        plt.tight_layout()
+        # Clean centered legend ABOVE plots
+        fig.legend(
+            handles,
+            labels,
+            title="Classes",
+            loc="upper center",
+            bbox_to_anchor=(0.5, 0.93),
+            ncol=len(labels),
+            frameon=False
+        )
+
+        fig.suptitle(title, fontsize=14, y=0.99)
+
+        # Leave space at top for legend + title
+        plt.tight_layout(rect=[0, 0, 1, 0.88])
         plt.show()
 
 # Plot linear data or training and test and predictions (optional)
